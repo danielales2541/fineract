@@ -180,7 +180,8 @@ public class LoanImportHandler implements ImportHandler {
             repaidEveryFrequencyEnums = new EnumOptionData(null, null, repaidEveryFrequencyId);
         }
         Integer loanTerm = ImportHandlerUtils.readAsInt(LoanConstants.LOAN_TERM_COL, row);
-        String loanTermFrequencyType = ImportHandlerUtils.readAsString(LoanConstants.LOAN_TERM_FREQUENCY_COL, row);
+        //String loanTermFrequencyType = ImportHandlerUtils.readAsString(LoanConstants.LOAN_TERM_FREQUENCY_COL, row);
+        String loanTermFrequencyType = "Months";
         EnumOptionData loanTermFrequencyEnum = null;
         if (loanTermFrequencyType != null) {
             String loanTermFrequencyId = EMPTY_STR;
@@ -197,7 +198,8 @@ public class LoanImportHandler implements ImportHandler {
         if (ImportHandlerUtils.readAsDouble(LoanConstants.NOMINAL_INTEREST_RATE_COL, row) != null) {
             nominalInterestRate = BigDecimal.valueOf(ImportHandlerUtils.readAsDouble(LoanConstants.NOMINAL_INTEREST_RATE_COL, row));
         }
-        String amortization = ImportHandlerUtils.readAsString(LoanConstants.AMORTIZATION_COL, row);
+        //String amortization = ImportHandlerUtils.readAsString(LoanConstants.AMORTIZATION_COL, row);
+        String amortization="Equal installments";
         String amortizationId = EMPTY_STR;
         EnumOptionData amortizationEnumOption = null;
         if (amortization != null) {
@@ -208,7 +210,8 @@ public class LoanImportHandler implements ImportHandler {
             }
             amortizationEnumOption = new EnumOptionData(null, null, amortizationId);
         }
-        String interestMethod = ImportHandlerUtils.readAsString(LoanConstants.INTEREST_METHOD_COL, row);
+        //String interestMethod = ImportHandlerUtils.readAsString(LoanConstants.INTEREST_METHOD_COL, row);
+        String interestMethod="Declining Balance";
         String interestMethodId = EMPTY_STR;
         EnumOptionData interestMethodEnum = null;
         if (interestMethod != null) {
@@ -219,7 +222,8 @@ public class LoanImportHandler implements ImportHandler {
             }
             interestMethodEnum = new EnumOptionData(null, null, interestMethodId);
         }
-        String interestCalculationPeriod = ImportHandlerUtils.readAsString(LoanConstants.INTEREST_CALCULATION_PERIOD_COL, row);
+        //String interestCalculationPeriod = ImportHandlerUtils.readAsString(LoanConstants.INTEREST_CALCULATION_PERIOD_COL, row);
+        String interestCalculationPeriod = "Same as repayment period";
         String interestCalculationPeriodId = EMPTY_STR;
         EnumOptionData interestCalculationPeriodEnum = null;
         if (interestCalculationPeriod != null) {
@@ -239,14 +243,15 @@ public class LoanImportHandler implements ImportHandler {
         String loanRepaymentScheduleTransactionProcessorStrategy = ImportHandlerUtils.readAsString(LoanConstants.REPAYMENT_STRATEGY_COL,
                 row);
 
-        LoanRepaymentScheduleTransactionProcessor loanRepaymentScheduleTransactionProcessor = loanRepaymentScheduleTransactionProcessorFactory
-                .determineProcessor(loanRepaymentScheduleTransactionProcessorStrategy);
+        //LoanRepaymentScheduleTransactionProcessor loanRepaymentScheduleTransactionProcessor = loanRepaymentScheduleTransactionProcessorFactory
+                //.determineProcessor(loanRepaymentScheduleTransactionProcessorStrategy);
 
         String repaymentStrategyCode = "mifos-standard-strategy";
 
-        if (loanRepaymentScheduleTransactionProcessor != null) {
-            repaymentStrategyCode = loanRepaymentScheduleTransactionProcessor.getCode();
-        }
+        //if (loanRepaymentScheduleTransactionProcessor != null) {
+            //repaymentStrategyCode = loanRepaymentScheduleTransactionProcessor.getCode();
+        //}
+
         Integer graceOnPrincipalPayment = ImportHandlerUtils.readAsInt(LoanConstants.GRACE_ON_PRINCIPAL_PAYMENT_COL, row);
         Integer graceOnInterestPayment = ImportHandlerUtils.readAsInt(LoanConstants.GRACE_ON_INTEREST_PAYMENT_COL, row);
         Integer graceOnInterestCharged = ImportHandlerUtils.readAsInt(LoanConstants.GRACE_ON_INTEREST_CHARGED_COL, row);

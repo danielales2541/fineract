@@ -654,7 +654,7 @@ public class LoansApiResource {
             @FormDataParam("file") FormDataContentDisposition fileDetail, @FormDataParam("locale") final String locale,
             @FormDataParam("dateFormat") final String dateFormat) {
         final Long importDocumentId = this.bulkImportWorkbookService.importWorkbook(GlobalEntityType.LOANS.toString(), uploadedInputStream,
-                fileDetail, locale, dateFormat);
+                fileDetail, "es", dateFormat);
         return this.toApiJsonSerializer.serialize(importDocumentId);
     }
 

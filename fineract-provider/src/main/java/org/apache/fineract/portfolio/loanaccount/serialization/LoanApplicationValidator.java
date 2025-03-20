@@ -339,11 +339,11 @@ public final class LoanApplicationValidator {
                         .notExceedingLengthOf(100);
             }
 
-            if (this.fromApiJsonHelper.parameterExists(LoanApiConstants.fundIdParameterName, element)) {
-                final Long fundId = this.fromApiJsonHelper.extractLongNamed(LoanApiConstants.fundIdParameterName, element);
-                baseDataValidator.reset().parameter(LoanApiConstants.fundIdParameterName).value(fundId).ignoreIfNull()
-                        .integerGreaterThanZero();
-            }
+            //if (this.fromApiJsonHelper.parameterExists(LoanApiConstants.fundIdParameterName, element)) {
+                //final Long fundId = this.fromApiJsonHelper.extractLongNamed(LoanApiConstants.fundIdParameterName, element);
+                //baseDataValidator.reset().parameter(LoanApiConstants.fundIdParameterName).value(fundId).ignoreIfNull()
+                       // .integerGreaterThanZero();
+           // }
 
             if (this.fromApiJsonHelper.parameterExists(LoanApiConstants.loanOfficerIdParameterName, element)) {
                 final Long loanOfficerId = this.fromApiJsonHelper.extractLongNamed(LoanApiConstants.loanOfficerIdParameterName, element);
@@ -418,11 +418,11 @@ public final class LoanApplicationValidator {
                     baseDataValidator.reset().parameter(LoanApiConstants.isFloatingInterestRate).trueOrFalseRequired(false);
                 }
 
-                if (InterestMethod.FLAT.getValue().equals(interestType)) {
-                    baseDataValidator.reset().parameter(LoanApiConstants.interestTypeParameterName).failWithCode(
-                            "should.be.0.for.selected.loan.product",
-                            "interestType should be DECLINING_BALANCE for selected Loan Product as it is linked to floating rates.");
-                }
+                //if (InterestMethod.FLAT.getValue().equals(interestType)) {
+                   // baseDataValidator.reset().parameter(LoanApiConstants.interestTypeParameterName).failWithCode(
+                     //       "should.be.0.for.selected.loan.product",
+                       //     "interestType should be DECLINING_BALANCE for selected Loan Product as it is linked to floating rates.");
+                //}
 
                 final String interestRateDifferentialParameterName = LoanApiConstants.interestRateDifferential;
                 final BigDecimal interestRateDifferential = this.fromApiJsonHelper
@@ -1028,6 +1028,7 @@ public final class LoanApplicationValidator {
                     LoanApiConstants.repaymentFrequencyDayOfWeekTypeParameterName, element, this.fromApiJsonHelper);
 
             Integer interestType = null;
+
             if (this.fromApiJsonHelper.parameterExists(LoanApiConstants.interestTypeParameterName, element)) {
                 atLeastOneParameterPassedForUpdate = true;
                 interestType = this.fromApiJsonHelper.extractIntegerWithLocaleNamed(LoanApiConstants.interestTypeParameterName, element);
@@ -1106,22 +1107,22 @@ public final class LoanApplicationValidator {
             Integer interestCalculationPeriodType = loanProduct.getLoanProductRelatedDetail().getInterestCalculationPeriodMethod()
                     .getValue();
 
-            if (this.fromApiJsonHelper.parameterExists(LoanApiConstants.interestCalculationPeriodTypeParameterName, element)) {
-                atLeastOneParameterPassedForUpdate = true;
-                interestCalculationPeriodType = this.fromApiJsonHelper
-                        .extractIntegerWithLocaleNamed(LoanApiConstants.interestCalculationPeriodTypeParameterName, element);
-                baseDataValidator.reset().parameter(LoanApiConstants.interestCalculationPeriodTypeParameterName)
-                        .value(interestCalculationPeriodType).notNull().inMinMaxRange(0, 1);
-            }
+            //if (this.fromApiJsonHelper.parameterExists(LoanApiConstants.interestCalculationPeriodTypeParameterName, element)) {
+                //atLeastOneParameterPassedForUpdate = true;
+                //interestCalculationPeriodType = this.fromApiJsonHelper
+                        //.extractIntegerWithLocaleNamed(LoanApiConstants.interestCalculationPeriodTypeParameterName, element);
+                //baseDataValidator.reset().parameter(LoanApiConstants.interestCalculationPeriodTypeParameterName)
+                        //.value(interestCalculationPeriodType).notNull().inMinMaxRange(0, 1);
+            //}
 
             Integer amortizationType = null;
-            if (this.fromApiJsonHelper.parameterExists(LoanApiConstants.amortizationTypeParameterName, element)) {
-                atLeastOneParameterPassedForUpdate = true;
-                amortizationType = this.fromApiJsonHelper.extractIntegerWithLocaleNamed(LoanApiConstants.amortizationTypeParameterName,
-                        element);
-                baseDataValidator.reset().parameter(LoanApiConstants.amortizationTypeParameterName).value(amortizationType).notNull()
-                        .inMinMaxRange(0, 1);
-            }
+            //if (this.fromApiJsonHelper.parameterExists(LoanApiConstants.amortizationTypeParameterName, element)) {
+                //atLeastOneParameterPassedForUpdate = true;
+                //amortizationType = this.fromApiJsonHelper.extractIntegerWithLocaleNamed(LoanApiConstants.amortizationTypeParameterName,
+                        //element);
+                //baseDataValidator.reset().parameter(LoanApiConstants.amortizationTypeParameterName).value(amortizationType).notNull()
+                        //.inMinMaxRange(0, 1);
+            //}
 
             if (!AmortizationMethod.EQUAL_PRINCIPAL.getValue().equals(amortizationType) && fixedPrincipalPercentagePerInstallment != null) {
                 baseDataValidator.reset().parameter(LoanApiConstants.fixedPrincipalPercentagePerInstallmentParamName).failWithCode(
