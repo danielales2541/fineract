@@ -692,7 +692,7 @@ public final class LoanApplicationValidator {
             }
             if (LoanScheduleProcessingType.VERTICAL.equals(LoanScheduleProcessingType.valueOf(loanScheduleProcessingType))
                     && !AdvancedPaymentScheduleTransactionProcessor.ADVANCED_PAYMENT_ALLOCATION_STRATEGY
-                            .equals(transactionProcessingStrategy)) {
+                    .equals(transactionProcessingStrategy)) {
                 baseDataValidator.reset().parameter(LoanProductConstants.LOAN_SCHEDULE_PROCESSING_TYPE).failWithCode(
                         "supported.only.with.advanced.payment.allocation.strategy",
                         "Vertical repayment schedule processing is only available with `Advanced payment allocation` strategy");
@@ -702,7 +702,7 @@ public final class LoanApplicationValidator {
 
             if (LoanScheduleProcessingType.HORIZONTAL.name().equals(loanScheduleProcessingType)
                     && AdvancedPaymentScheduleTransactionProcessor.ADVANCED_PAYMENT_ALLOCATION_STRATEGY
-                            .equals(transactionProcessingStrategy)) {
+                    .equals(transactionProcessingStrategy)) {
                 advancedPaymentAllocationsValidator.checkGroupingOfAllocationRules(allocationRules);
             }
 
@@ -790,7 +790,7 @@ public final class LoanApplicationValidator {
     }
 
     private void validateBorrowerCycle(JsonElement element, LoanProduct loanProduct, Long clientId, Long groupId,
-            DataValidatorBuilder baseDataValidator) {
+                                       DataValidatorBuilder baseDataValidator) {
         if (loanProduct.isUseBorrowerCycle()) {
             Integer cycleNumber = 0;
             if (clientId != null) {
@@ -962,7 +962,7 @@ public final class LoanApplicationValidator {
             if (!AdvancedPaymentScheduleTransactionProcessor.ADVANCED_PAYMENT_ALLOCATION_STRATEGY
                     .equals(loanProduct.getTransactionProcessingStrategyCode())
                     && AdvancedPaymentScheduleTransactionProcessor.ADVANCED_PAYMENT_ALLOCATION_STRATEGY
-                            .equals(transactionProcessingStrategy)) {
+                    .equals(transactionProcessingStrategy)) {
                 baseDataValidator.reset().parameter(LoanApiConstants.transactionProcessingStrategyCodeParameterName).failWithCode(
                         "strategy.cannot.be.advanced.payment.allocation.if.not.configured",
                         "Loan transaction processing strategy cannot be Advanced Payment Allocation Strategy if it's not configured on loan product");
@@ -1403,7 +1403,7 @@ public final class LoanApplicationValidator {
             }
             if (LoanScheduleProcessingType.VERTICAL.equals(LoanScheduleProcessingType.valueOf(loanScheduleProcessingType))
                     && !AdvancedPaymentScheduleTransactionProcessor.ADVANCED_PAYMENT_ALLOCATION_STRATEGY
-                            .equals(transactionProcessingStrategy)) {
+                    .equals(transactionProcessingStrategy)) {
                 baseDataValidator.reset().parameter(LoanProductConstants.LOAN_SCHEDULE_PROCESSING_TYPE).failWithCode(
                         "supported.only.with.advanced.payment.allocation.strategy",
                         "Vertical repayment schedule processing is only available with `Advanced payment allocation` strategy");
@@ -1413,7 +1413,7 @@ public final class LoanApplicationValidator {
 
             if (LoanScheduleProcessingType.HORIZONTAL.name().equals(loanScheduleProcessingType)
                     && AdvancedPaymentScheduleTransactionProcessor.ADVANCED_PAYMENT_ALLOCATION_STRATEGY
-                            .equals(transactionProcessingStrategy)) {
+                    .equals(transactionProcessingStrategy)) {
                 advancedPaymentAllocationsValidator.checkGroupingOfAllocationRules(allocationRules);
             }
 
@@ -1548,7 +1548,7 @@ public final class LoanApplicationValidator {
     }
 
     private void validateLoanTermAndRepaidEveryValues(final Integer loanTermFrequency, final Integer loanTermFrequencyType,
-            final Integer numberOfRepayments, final Integer repaymentEvery, final Integer repaymentEveryType, final Loan loan) {
+                                                      final Integer numberOfRepayments, final Integer repaymentEvery, final Integer repaymentEveryType, final Loan loan) {
         final List<ApiParameterError> dataValidationErrors = new ArrayList<>();
         this.loanScheduleValidator.validateSelectedPeriodFrequencyTypeIsTheSame(dataValidationErrors, loanTermFrequency,
                 loanTermFrequencyType, numberOfRepayments, repaymentEvery, repaymentEveryType);
@@ -1650,7 +1650,7 @@ public final class LoanApplicationValidator {
     }
 
     public void validateLoanMultiDisbursementDate(final JsonElement element, final DataValidatorBuilder baseDataValidator,
-            LocalDate expectedDisbursement, BigDecimal totalPrincipal) {
+                                                  LocalDate expectedDisbursement, BigDecimal totalPrincipal) {
         this.validateDisbursementsAreDatewiseOrdered(element, baseDataValidator);
 
         final JsonObject topLevelJsonElement = element.getAsJsonObject();
@@ -1727,7 +1727,7 @@ public final class LoanApplicationValidator {
     }
 
     private void validatePartialPeriodSupport(final Integer interestCalculationPeriodType, final DataValidatorBuilder baseDataValidator,
-            final JsonElement element, final LoanProduct loanProduct) {
+                                              final JsonElement element, final LoanProduct loanProduct) {
         if (interestCalculationPeriodType != null) {
             final InterestCalculationPeriodMethod interestCalculationPeriodMethod = InterestCalculationPeriodMethod
                     .fromInt(interestCalculationPeriodType);
@@ -1854,7 +1854,7 @@ public final class LoanApplicationValidator {
     }
 
     private void validateSubmittedOnDate(final JsonElement element, LocalDate originalSubmittedOnDate,
-            LocalDate originalExpectedDisbursementDate, LoanProduct loanProduct) {
+                                         LocalDate originalExpectedDisbursementDate, LoanProduct loanProduct) {
         final LocalDate startDate = loanProduct.getStartDate();
         final LocalDate closeDate = loanProduct.getCloseDate();
         final LocalDate submittedOnDate = this.fromApiJsonHelper.parameterExists(LoanApiConstants.submittedOnDateParameterName, element)
@@ -1864,8 +1864,8 @@ public final class LoanApplicationValidator {
         final Long groupId = this.fromApiJsonHelper.extractLongNamed(LoanApiConstants.groupIdParameterName, element);
         final LocalDate expectedDisbursementDate = this.fromApiJsonHelper
                 .parameterExists(LoanApiConstants.expectedDisbursementDateParameterName, element)
-                        ? this.fromApiJsonHelper.extractLocalDateNamed(LoanApiConstants.expectedDisbursementDateParameterName, element)
-                        : originalExpectedDisbursementDate;
+                ? this.fromApiJsonHelper.extractLocalDateNamed(LoanApiConstants.expectedDisbursementDateParameterName, element)
+                : originalExpectedDisbursementDate;
 
         String defaultUserMessage = "";
         if (DateUtils.isBefore(submittedOnDate, startDate)) {
@@ -2135,7 +2135,7 @@ public final class LoanApplicationValidator {
      * validate disbursement date should fall on a meeting date
      */
     public void validateDisbursementDateWithMeetingDates(final LocalDate expectedDisbursementDate, final Calendar calendar,
-            Boolean isSkipRepaymentOnFirstMonth, Integer numberOfDays) {
+                                                         Boolean isSkipRepaymentOnFirstMonth, Integer numberOfDays) {
         if (calendar != null && !calendar.isValidRecurringDate(expectedDisbursementDate, isSkipRepaymentOnFirstMonth, numberOfDays)) {
             final String errorMessage = "Expected disbursement date '" + expectedDisbursementDate + "' do not fall on a meeting date";
             throw new LoanApplicationDateException("disbursement.date.do.not.match.meeting.date", errorMessage, expectedDisbursementDate);

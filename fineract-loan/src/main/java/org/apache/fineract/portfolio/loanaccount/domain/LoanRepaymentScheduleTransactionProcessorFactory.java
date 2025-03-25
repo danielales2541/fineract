@@ -42,7 +42,8 @@ public class LoanRepaymentScheduleTransactionProcessorFactory {
                 .filter(p -> p.accept(transactionProcessingStrategy)).findFirst();
 
         if (processor.isEmpty() && Boolean.TRUE.equals(errorNotFoundFail)) {
-            throw new LoanTransactionProcessingStrategyNotFoundException(transactionProcessingStrategy);
+             throw new LoanTransactionProcessingStrategyNotFoundException(transactionProcessingStrategy);
+
         } else {
             return processor.orElse(defaultLoanRepaymentScheduleTransactionProcessor);
         }
