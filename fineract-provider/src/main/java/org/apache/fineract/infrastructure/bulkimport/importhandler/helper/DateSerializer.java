@@ -25,10 +25,17 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class DateSerializer implements JsonSerializer<LocalDate> {
 
     private final String dateFormat;
+    private String localeCode = "";
+
+    public DateSerializer(String dateFormat, String localeCode) {
+        this.dateFormat = dateFormat;
+        this.localeCode = localeCode;
+    }
 
     public DateSerializer(String dateFormat) {
         this.dateFormat = dateFormat;
@@ -36,6 +43,16 @@ public class DateSerializer implements JsonSerializer<LocalDate> {
 
     @Override
     public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(src.format(DateTimeFormatter.ofPattern(dateFormat)));
+        DateTimeFormatter formatter;
+
+
+        if (localeCode != "" && !localeCode.isEmpty()) {
+            formatter = DateTimeFormatter.ofPattern(dateFormat, new Locale(localeCode));
+        } else {
+            
+            formatter = DateTimeFormatter.ofPattern(dateFormat);
+        }
+
+        return new JsonPrimitive(src.format(formatter));
     }
 }

@@ -124,18 +124,12 @@ public class LoanImportHandler implements ImportHandler {
         if (ImportHandlerUtils.readAsLong(LoanConstants.LINK_ACCOUNT_ID, row) != null) {
             linkAccountId = Objects.requireNonNull(ImportHandlerUtils.readAsLong(LoanConstants.LINK_ACCOUNT_ID, row)).toString();
         }
-
-        if (disbursedDate != null) {
-            return DisbursementData.importInstance(disbursedDate, linkAccountId, row.getRowNum(), locale, dateFormat);
-        }
         return null;
     }
 
     private LoanApprovalData readLoanApproval(final Row row, final String locale, final String dateFormat) {
         LocalDate approvedDate = ImportHandlerUtils.readAsDate(LoanConstants.APPROVED_DATE_COL, row);
-        if (approvedDate != null) {
-            return LoanApprovalData.importInstance(approvedDate, row.getRowNum(), locale, dateFormat);
-        }
+
 
         return null;
     }
@@ -207,6 +201,7 @@ public class LoanImportHandler implements ImportHandler {
                 amortizationId = "1";
             }
             amortizationEnumOption = new EnumOptionData(null, null, amortizationId);
+
         }
         String interestMethod = ImportHandlerUtils.readAsString(LoanConstants.INTEREST_METHOD_COL, row);
         String interestMethodId = EMPTY_STR;
@@ -366,7 +361,7 @@ public class LoanImportHandler implements ImportHandler {
                         .getIdByName(workbook.getSheet(TemplatePopulateImportConstants.GROUP_SHEET_NAME), clientOrGroupName);
                 return LoanAccountData.importInstanceGroup(loanTypeEnumOption, groupIdforGroupLoan, productId, loanOfficerId,
                         submittedOnDate, fundId, principal, numberOfRepayments, repaidEvery, repaidEveryFrequencyEnums, loanTerm,
-                        loanTermFrequencyEnum, nominalInterestRate, amortizationEnumOption, interestMethodEnum,
+                        loanTermFrequencyEnum, nominalInterestRate, submittedOnDate, amortizationEnumOption, interestMethodEnum,
                         interestCalculationPeriodEnum, arrearsTolerance, repaymentStrategyCode, graceOnPrincipalPayment,
                         graceOnInterestPayment, graceOnInterestCharged, interestChargedFromDate, firstRepaymentOnDate, row.getRowNum(),
                         externalId, linkAccountId, locale, dateFormat, null);
@@ -522,7 +517,7 @@ public class LoanImportHandler implements ImportHandler {
 
     private CommandProcessingResult importLoan(final List<LoanAccountData> loans, final int rowIndex, final String dateFormat) {
         GsonBuilder gsonBuilder = GoogleGsonSerializerHelper.createGsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat));
+        gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat, loans.get(rowIndex).getLocale()));
         gsonBuilder.registerTypeAdapter(EnumOptionData.class, new EnumOptionDataValueSerializer());
         JsonObject loanJsonOb = gsonBuilder.create().toJsonTree(loans.get(rowIndex)).getAsJsonObject();
         loanJsonOb.remove("isLoanProductLinkedToFloatingRate");
