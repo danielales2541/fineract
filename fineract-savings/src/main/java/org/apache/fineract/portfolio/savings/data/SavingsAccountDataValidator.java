@@ -196,12 +196,12 @@ public class SavingsAccountDataValidator {
                     .extractIntegerSansLocaleNamed(lockinPeriodFrequencyTypeParamName, element);
             baseDataValidator.reset().parameter(lockinPeriodFrequencyTypeParamName).value(lockinPeriodFrequencyType).inMinMaxRange(0, 3);
 
-            /*if (lockinPeriodFrequencyType != null) {
+            if (lockinPeriodFrequencyType != null) {
                 final Integer lockinPeriodFrequency = this.fromApiJsonHelper.extractIntegerWithLocaleNamed(lockinPeriodFrequencyParamName,
                         element);
                 baseDataValidator.reset().parameter(lockinPeriodFrequencyParamName).value(lockinPeriodFrequency).notNull()
                         .integerZeroOrGreater();
-            }*/
+            }
         }
 
         if (this.fromApiJsonHelper.parameterExists(withdrawalFeeForTransfersParamName, element)) {
@@ -383,12 +383,12 @@ public class SavingsAccountDataValidator {
                     .zeroOrPositiveAmount();
         }
 
-      /*  if (this.fromApiJsonHelper.parameterExists(lockinPeriodFrequencyParamName, element)) {
+        if (this.fromApiJsonHelper.parameterExists(lockinPeriodFrequencyParamName, element)) {
             final Integer lockinPeriodFrequency = this.fromApiJsonHelper.extractIntegerWithLocaleNamed(lockinPeriodFrequencyParamName,
                     element);
             baseDataValidator.reset().parameter(lockinPeriodFrequencyParamName).value(lockinPeriodFrequency).ignoreIfNull()
                     .integerZeroOrGreater();
-        }*/
+        }
 
         if (this.fromApiJsonHelper.parameterExists(lockinPeriodFrequencyTypeParamName, element)) {
             final Integer lockinPeriodFrequencyType = this.fromApiJsonHelper

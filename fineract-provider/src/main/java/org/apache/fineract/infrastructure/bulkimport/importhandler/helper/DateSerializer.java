@@ -45,11 +45,10 @@ public class DateSerializer implements JsonSerializer<LocalDate> {
     public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
         DateTimeFormatter formatter;
 
-        // 🔹 Si el locale está definido, usamos el nuevo método con idioma
+
         if (localeCode != "" && !localeCode.isEmpty()) {
             formatter = DateTimeFormatter.ofPattern(dateFormat, new Locale(localeCode));
         } else {
-            // 🔹 Si no se define locale, usamos el método "viejo" sin especificar idioma
             formatter = DateTimeFormatter.ofPattern(dateFormat);
         }
 
