@@ -147,7 +147,7 @@ public class ChartOfAccountsImportHandler implements ImportHandler {
         GsonBuilder gsonBuilder = GoogleGsonSerializerHelper.createGsonBuilder();
         gsonBuilder.registerTypeAdapter(EnumOptionData.class, new EnumOptionDataIdSerializer());
         gsonBuilder.registerTypeAdapter(CodeValueData.class, new CodeValueDataIdSerializer());
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat));
+        gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat, locale));
         gsonBuilder.registerTypeAdapter(CurrencyData.class, new CurrencyDateCodeSerializer());
         int successCount = 0;
         int errorCount = 0;

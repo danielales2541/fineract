@@ -61,6 +61,14 @@ public final class ImportHandlerUtils {
             } else {
                 break;
             }
+        while (sheet.getRow(noOfEntries + 1) != null) {
+            Cell cell = sheet.getRow(noOfEntries + 1).getCell(primaryColumn);
+
+            if (cell != null && cell.getCellType() != CellType.BLANK) {
+                noOfEntries++;
+            } else {
+                break;
+            }
         }
 
         return noOfEntries;
