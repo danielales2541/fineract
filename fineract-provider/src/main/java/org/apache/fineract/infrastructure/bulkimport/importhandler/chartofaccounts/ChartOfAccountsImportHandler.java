@@ -123,13 +123,13 @@ public class ChartOfAccountsImportHandler implements ImportHandler {
         }
         Boolean manualEntriesAllowed = ImportHandlerUtils.readAsBoolean(ChartOfAcountsConstants.MANUAL_ENTRIES_ALLOWED_COL, row);
         Long parentId = null;
-        if (ImportHandlerUtils.readAsString(ChartOfAcountsConstants.PARENT_ID_COL, row) != null) {
+        if (ImportHandlerUtils.readAsString(ChartOfAcountsConstants.PARENT_ID_COL, row) != null ) {
             parentId = Long.parseLong(Objects.requireNonNull(ImportHandlerUtils.readAsString(ChartOfAcountsConstants.PARENT_ID_COL, row)));
         }
         String glCode = ImportHandlerUtils.readAsString(ChartOfAcountsConstants.GL_CODE_COL, row);
         Long tagId = null;
         CodeValueData tagIdCodeValueData = null;
-        if (ImportHandlerUtils.readAsString(ChartOfAcountsConstants.TAG_ID_COL, row) != null) {
+        if (ImportHandlerUtils.readAsString(ChartOfAcountsConstants.TAG_ID_COL, row) != null && !ImportHandlerUtils.readAsString(ChartOfAcountsConstants.TAG_ID_COL, row ).equals("0")) {
             tagId = Long.parseLong(Objects.requireNonNull(ImportHandlerUtils.readAsString(ChartOfAcountsConstants.TAG_ID_COL, row)));
             tagIdCodeValueData = new CodeValueData().setId(tagId);
         }
