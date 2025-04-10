@@ -39,6 +39,12 @@ public class DateSerializer implements JsonSerializer<LocalDate> {
         this.dateFormat = dateFormat;
         this.localeCode = localeCode;
     }
+    private String localeCode;
+
+    public DateSerializer(String dateFormat, String localeCode) {
+        this.dateFormat = dateFormat;
+        this.localeCode = localeCode;
+    }
 
     public DateSerializer(String dateFormat) {
         this.dateFormat = dateFormat;
