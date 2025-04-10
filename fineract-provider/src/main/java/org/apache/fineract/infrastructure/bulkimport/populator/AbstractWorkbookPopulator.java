@@ -81,7 +81,7 @@ public abstract class AbstractWorkbookPopulator implements WorkbookPopulator {
             }
             LocalDate date1 = LocalDate.parse(value, formatinDB);
             DateTimeFormatter expectedFormat = new DateTimeFormatterBuilder().appendPattern(dateFormat).toFormatter();
-            row.createCell(colIndex).setCellValue(Date.from(date1.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            row.createCell(colIndex).setCellValue(expectedFormat.format(date1));
             row.getCell(colIndex).setCellStyle(dateCellStyle);
         } catch (DateTimeParseException pe) {
             throw new IllegalArgumentException(pe);
