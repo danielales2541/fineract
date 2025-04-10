@@ -125,8 +125,6 @@ public class ChartOfAccountsWorkbook extends AbstractWorkbookPopulator {
         DataValidationConstraint parentConstraint = validationHelper
                 .createFormulaListConstraint("INDIRECT(CONCATENATE(\"AccountName_\",$A1))");
         DataValidationConstraint tagConstraint = validationHelper.createFormulaListConstraint("INDIRECT(CONCATENATE(\"Tags_\",$A1))");
-        DataValidationConstraint officeNameConstraint = validationHelper.createFormulaListConstraint("Office");
-        DataValidationConstraint currencyCodeConstraint = validationHelper.createExplicitListConstraint(getCurrency());
 
         DataValidation accountTypeValidation = validationHelper.createValidation(accountTypeConstraint, accountTypeRange);
         DataValidation accountUsageValidation = validationHelper.createValidation(accountUsageConstraint, accountUsageRange);

@@ -124,13 +124,17 @@ public class LoanImportHandler implements ImportHandler {
         if (ImportHandlerUtils.readAsLong(LoanConstants.LINK_ACCOUNT_ID, row) != null) {
             linkAccountId = Objects.requireNonNull(ImportHandlerUtils.readAsLong(LoanConstants.LINK_ACCOUNT_ID, row)).toString();
         }
+        if (disbursedDate != null) {
+            return DisbursementData.importInstance(disbursedDate, linkAccountId, row.getRowNum(), locale, dateFormat);
+        }
         return null;
     }
 
     private LoanApprovalData readLoanApproval(final Row row, final String locale, final String dateFormat) {
         LocalDate approvedDate = ImportHandlerUtils.readAsDate(LoanConstants.APPROVED_DATE_COL, row);
-
-
+        if (approvedDate != null) {
+            return LoanApprovalData.importInstance(approvedDate, row.getRowNum(), locale, dateFormat);
+        }
         return null;
     }
 
@@ -457,7 +461,7 @@ public class LoanImportHandler implements ImportHandler {
     private Integer importLoanRepayment(final List<LoanTransactionData> loanRepayments, final CommandProcessingResult result,
             final int rowIndex, final String dateFormat) {
         GsonBuilder gsonBuilder = GoogleGsonSerializerHelper.createGsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat));
+        gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat, loanRepayments.get(rowIndex).getLocale()));
         JsonObject loanRepaymentJsonob = gsonBuilder.create().toJsonTree(loanRepayments.get(rowIndex)).getAsJsonObject();
         loanRepaymentJsonob.remove("manuallyReversed");
         loanRepaymentJsonob.remove("numberOfRepayments");
@@ -478,7 +482,7 @@ public class LoanImportHandler implements ImportHandler {
             DisbursementData disbusalData = disbursalDates.get(rowIndex);
             String linkAccountId = disbusalData.getLinkAccountId();
             GsonBuilder gsonBuilder = GoogleGsonSerializerHelper.createGsonBuilder();
-            gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat));
+            gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat, approvalDates.get(rowIndex).getLocale()));
             if (linkAccountId != null && !EMPTY_STR.equals(linkAccountId)) {
                 String payload = gsonBuilder.create().toJson(disbusalData);
                 final CommandWrapper commandRequest = new CommandWrapperBuilder() //
@@ -503,7 +507,7 @@ public class LoanImportHandler implements ImportHandler {
             final String dateFormat) {
         if (approvalDates.get(rowIndex) != null) {
             GsonBuilder gsonBuilder = GoogleGsonSerializerHelper.createGsonBuilder();
-            gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat));
+            gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat, approvalDates.get(rowIndex).getLocale()));
             String payload = gsonBuilder.create().toJson(approvalDates.get(rowIndex));
             final CommandWrapper commandRequest = new CommandWrapperBuilder() //
                     .approveLoanApplication(result.getLoanId()) //

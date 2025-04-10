@@ -26,12 +26,12 @@ import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-import java.util.Locale;
+import org.apache.commons.lang3.StringUtils;
 
 public class DateSerializer implements JsonSerializer<LocalDate> {
 
     private final String dateFormat;
-    private String localeCode = "";
+    private String localeCode;
 
     public DateSerializer(String dateFormat, String localeCode) {
         this.dateFormat = dateFormat;
@@ -46,7 +46,7 @@ public class DateSerializer implements JsonSerializer<LocalDate> {
     public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
         DateTimeFormatter formatter;
 
-        if (!"".equals(localeCode) && !localeCode.isEmpty()) {
+        if (StringUtils.isNotEmpty(localeCode)) {
             formatter = DateTimeFormatter.ofPattern(dateFormat, new Locale(localeCode));
         } else {
 

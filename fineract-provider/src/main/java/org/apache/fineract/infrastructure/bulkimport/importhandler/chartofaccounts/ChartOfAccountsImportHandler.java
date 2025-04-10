@@ -129,7 +129,8 @@ public class ChartOfAccountsImportHandler implements ImportHandler {
         String glCode = ImportHandlerUtils.readAsString(ChartOfAcountsConstants.GL_CODE_COL, row);
         Long tagId = null;
         CodeValueData tagIdCodeValueData = null;
-        if (ImportHandlerUtils.readAsString(ChartOfAcountsConstants.TAG_ID_COL, row) != null && !ImportHandlerUtils.readAsString(ChartOfAcountsConstants.TAG_ID_COL, row ).equals("0")) {
+        if (ImportHandlerUtils.readAsString(ChartOfAcountsConstants.TAG_ID_COL, row) != null
+                && !ImportHandlerUtils.readAsString(ChartOfAcountsConstants.TAG_ID_COL, row).equals("0")) {
             tagId = Long.parseLong(Objects.requireNonNull(ImportHandlerUtils.readAsString(ChartOfAcountsConstants.TAG_ID_COL, row)));
             tagIdCodeValueData = new CodeValueData().setId(tagId);
         }
