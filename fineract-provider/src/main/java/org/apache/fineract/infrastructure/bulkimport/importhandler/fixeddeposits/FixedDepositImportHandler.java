@@ -75,7 +75,7 @@ public class FixedDepositImportHandler implements ImportHandler {
         List<String> statuses = new ArrayList<>();
 
         readExcelFile(workbook, savings, approvalDates, activationDates, closedOnDates, statuses, locale, dateFormat);
-        return importEntity(workbook, savings, approvalDates, activationDates, closedOnDates, statuses, dateFormat);
+        return importEntity(workbook, savings, approvalDates, activationDates, closedOnDates, statuses, dateFormat, locale);
     }
 
     private void readExcelFile(final Workbook workbook, final List<FixedDepositAccountData> savings,
@@ -271,7 +271,7 @@ public class FixedDepositImportHandler implements ImportHandler {
 
     private Count importEntity(final Workbook workbook, final List<FixedDepositAccountData> savings,
             final List<SavingsApproval> approvalDates, final List<SavingsActivation> activationDates,
-            final List<ClosingOfSavingsAccounts> closedOnDates, final List<String> statuses, String dateFormat) {
+            final List<ClosingOfSavingsAccounts> closedOnDates, final List<String> statuses, final String dateFormat, final String locale) {
         Sheet savingsSheet = workbook.getSheet(TemplatePopulateImportConstants.FIXED_DEPOSIT_SHEET_NAME);
         int successCount = 0;
         int errorCount = 0;
@@ -287,8 +287,8 @@ public class FixedDepositImportHandler implements ImportHandler {
                 progressLevel = getProgressLevel(status);
 
                 if (progressLevel == 0) {
-                    CommandProcessingResult result = importSavings(savings, i, dateFormat);
-                    savingsId = result.getSavingsId();
+                    CommandProcessingResult result = importSavings(savings, i, dateFormat, locale);
+                    savingsId = result.  getSavingsId();
                     progressLevel = 1;
                 } else {
                     savingsId = ImportHandlerUtils.readAsLong(FixedDepositConstants.SAVINGS_ID_COL,
@@ -296,15 +296,15 @@ public class FixedDepositImportHandler implements ImportHandler {
                 }
 
                 if (progressLevel <= 1) {
-                    progressLevel = importSavingsApproval(approvalDates, savingsId, i, dateFormat);
+                    progressLevel = importSavingsApproval(approvalDates, savingsId, i, dateFormat, locale);
                 }
 
                 if (progressLevel <= 2) {
-                    progressLevel = importSavingsActivation(activationDates, savingsId, i, dateFormat);
+                    progressLevel = importSavingsActivation(activationDates, savingsId, i, dateFormat, locale);
                 }
 
                 if (progressLevel <= 3) {
-                    progressLevel = importSavingsClosing(closedOnDates, savingsId, i, dateFormat);
+                    progressLevel = importSavingsClosing(closedOnDates, savingsId, i, dateFormat, locale);
                 }
 
                 successCount++;
@@ -342,10 +342,10 @@ public class FixedDepositImportHandler implements ImportHandler {
     }
 
     private int importSavingsClosing(List<ClosingOfSavingsAccounts> closedOnDates, final Long savingsId, final int i,
-            final String dateFormat) {
+            final String dateFormat, final String locale) {
         if (closedOnDates.get(i) != null) {
             GsonBuilder gsonBuilder = GoogleGsonSerializerHelper.createGsonBuilder();
-            gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat));
+            gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat, locale));
             String payload = gsonBuilder.create().toJson(closedOnDates.get(i));
             final CommandWrapper commandRequest = new CommandWrapperBuilder() //
                     .closeFixedDepositAccount(savingsId)//
@@ -356,9 +356,10 @@ public class FixedDepositImportHandler implements ImportHandler {
         return 4;
     }
 
-    private CommandProcessingResult importSavings(List<FixedDepositAccountData> savings, final int i, final String dateFormat) {
+    private CommandProcessingResult importSavings(List<FixedDepositAccountData> savings, final int i, final String dateFormat,
+    final String locale) {
         GsonBuilder gsonBuilder = GoogleGsonSerializerHelper.createGsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat));
+        gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat, locale));
         gsonBuilder.registerTypeAdapter(EnumOptionData.class, new EnumOptionDataIdSerializer());
         JsonObject savingsJsonob = gsonBuilder.create().toJsonTree(savings.get(i)).getAsJsonObject();
         savingsJsonob.remove("withdrawalFeeForTransfers");
@@ -380,10 +381,10 @@ public class FixedDepositImportHandler implements ImportHandler {
     }
 
     private int importSavingsApproval(final List<SavingsApproval> approvalDates, final Long savingsId, final int i,
-            final String dateFormat) {
+            final String dateFormat, final String locale) {
         if (approvalDates.get(i) != null) {
             GsonBuilder gsonBuilder = GoogleGsonSerializerHelper.createGsonBuilder();
-            gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat));
+            gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat, locale));
             String payload = gsonBuilder.create().toJson(approvalDates.get(i));
             final CommandWrapper commandRequest = new CommandWrapperBuilder() //
                     .approveFixedDepositAccountApplication(savingsId)//
@@ -395,10 +396,10 @@ public class FixedDepositImportHandler implements ImportHandler {
     }
 
     private int importSavingsActivation(final List<SavingsActivation> activationDates, final Long savingsId, final int i,
-            final String dateFormat) {
+            final String dateFormat, final String locale) {
         if (activationDates.get(i) != null) {
             GsonBuilder gsonBuilder = GoogleGsonSerializerHelper.createGsonBuilder();
-            gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat));
+            gsonBuilder.registerTypeAdapter(LocalDate.class, new DateSerializer(dateFormat, locale));
             String payload = gsonBuilder.create().toJson(activationDates.get(i));
             final CommandWrapper commandRequest = new CommandWrapperBuilder() //
                     .fixedDepositAccountActivation(savingsId)//
