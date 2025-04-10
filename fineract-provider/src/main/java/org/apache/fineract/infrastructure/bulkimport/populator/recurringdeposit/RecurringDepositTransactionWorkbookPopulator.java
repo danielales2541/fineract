@@ -18,6 +18,7 @@
  */
 package org.apache.fineract.infrastructure.bulkimport.populator.recurringdeposit;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -204,7 +205,12 @@ public class RecurringDepositTransactionWorkbookPopulator extends AbstractWorkbo
             row = savingsTransactionSheet.createRow(rowIndex++);
             writeString(TransactionConstants.LOOKUP_CLIENT_NAME_COL, row,
                     savingsAccount.getClientName() + "(" + savingsAccount.getClientId() + ")");
-            writeString(TransactionConstants.LOOKUP_ACCOUNT_NO_COL, row, savingsAccount.getAccountNo());
+            try {
+                BigDecimal accountNoAsBigDecimal = new BigDecimal(savingsAccount.getAccountNo());
+                writeBigDecimal(TransactionConstants.LOOKUP_ACCOUNT_NO_COL, row, accountNoAsBigDecimal);
+            } catch (NumberFormatException e) {
+                writeString(TransactionConstants.LOOKUP_ACCOUNT_NO_COL, row, savingsAccount.getAccountNo());
+            }
             writeString(TransactionConstants.LOOKUP_PRODUCT_COL, row, savingsAccount.getSavingsProductName());
             if (savingsAccount.getMinRequiredOpeningBalance() != null) {
                 writeBigDecimal(TransactionConstants.LOOKUP_OPENING_BALANCE_COL, row, savingsAccount.getMinRequiredOpeningBalance());
